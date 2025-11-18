@@ -1,0 +1,30 @@
+# Binaries
+fleet-mate
+fleet-mate-*
+fleet-officer
+fleet-officer-*
+*.exe
+
+# Logs
+*.log
+
+# Config (sensitive)
+config.yml
+config-*.yml
+
+# Go
+go.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test directories
+*-test/
