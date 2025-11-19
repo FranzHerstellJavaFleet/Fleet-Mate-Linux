@@ -210,6 +210,50 @@ sudo journalctl -u fleet-mate -f
 }
 ```
 
+#### 4. Log Data (Response)
+```json
+{
+  "type": "log_data",
+  "mate_id": "ubuntu-desktop-01",
+  "data": {
+    "sessionId": "session-123",
+    "chunk": "Log content chunk...",
+    "progress": 50.0,
+    "currentLine": 500,
+    "totalLines": 1000,
+    "chunkNumber": 1,
+    "totalChunks": 2
+  },
+  "timestamp": "2025-11-05T14:30:10Z"
+}
+```
+
+#### 5. Command Output (Response)
+```json
+{
+  "type": "command_output",
+  "mate_id": "ubuntu-desktop-01",
+  "data": {
+    "sessionId": "session-456",
+    "content": "Filesystem      Size  Used Avail Use% Mounted on\n..."
+  },
+  "timestamp": "2025-11-05T14:30:15Z"
+}
+```
+
+#### 6. Command Complete (Response)
+```json
+{
+  "type": "command_complete",
+  "mate_id": "ubuntu-desktop-01",
+  "data": {
+    "sessionId": "session-456",
+    "exitCode": 0
+  },
+  "timestamp": "2025-11-05T14:30:16Z"
+}
+```
+
 ### Commands vom Navigator zum Mate:
 
 #### 1. Ping
@@ -228,7 +272,36 @@ sudo journalctl -u fleet-mate -f
 }
 ```
 
-#### 3. Shutdown
+#### 3. Read Log
+```json
+{
+  "type": "read_log",
+  "payload": {
+    "sessionId": "session-123",
+    "path": "/var/log/syslog",
+    "mode": "smart",
+    "lines": 1000
+  },
+  "timestamp": "2025-11-05T14:30:00Z"
+}
+```
+
+#### 4. Execute Command
+```json
+{
+  "type": "execute_command",
+  "payload": {
+    "sessionId": "session-456",
+    "command": "df",
+    "args": ["-h"],
+    "workingDir": "/tmp",
+    "timeout": 300
+  },
+  "timestamp": "2025-11-05T14:30:00Z"
+}
+```
+
+#### 5. Shutdown
 ```json
 {
   "type": "shutdown",
@@ -310,12 +383,12 @@ go build -o fleet-mate main.go
 ## 🎯 Roadmap
 
 - [x] GPU Monitoring (NVIDIA) - ✅ v1.1.0
+- [x] Log-Analyse - ✅ v1.1.0 (smart/full/errors-only Modi)
+- [x] Command Execution (von Navigator gesteuert) - ✅ v1.1.0 (Whitelist-basiert)
 - [ ] AMD GPU Support
 - [ ] Intel GPU Support
 - [ ] Prozess-Monitoring (Top 10 CPU/RAM Prozesse)
 - [ ] Service-Status (systemd services)
-- [ ] Log-Analyse
-- [ ] Command Execution (von Navigator gesteuert)
 - [ ] TLS/SSL für WebSocket
 - [ ] Authentifizierung mit API Key
 
@@ -327,6 +400,8 @@ go build -o fleet-mate main.go
 - ✅ **GPU Monitoring hinzugefügt**: NVIDIA GPU/VRAM Auslastung und Temperatur
 - ✅ Unterstützung für `nvidia-smi` Integration
 - ✅ GPU Metriken in WebSocket Stats
+- ✅ **Log-Analyse**: Lesen und Filtern von Log-Dateien (smart/full/errors-only Modi)
+- ✅ **Command Execution**: Sichere Remote-Befehlsausführung mit Whitelist/Blacklist
 
 ### v1.0.0 (2025-11-05)
 - ✅ Initiales Release
