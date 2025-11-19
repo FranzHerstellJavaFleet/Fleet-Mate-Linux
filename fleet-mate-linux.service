@@ -1,0 +1,33 @@
+[Unit]
+Description=Fleet Mate Linux - Hardware Monitoring Agent
+Documentation=https://github.com/javafleet/fleet-mate-linux
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=trainer
+Group=trainer
+WorkingDirectory=/home/trainer/NetBeansProjects/ProjekteFMH/Fleet-Mate-Linux
+ExecStart=/home/trainer/NetBeansProjects/ProjekteFMH/Fleet-Mate-Linux/fleet-mate -config /home/trainer/NetBeansProjects/ProjekteFMH/Fleet-Mate-Linux/config.yml
+
+# Restart policy
+Restart=always
+RestartSec=10
+StartLimitInterval=300
+StartLimitBurst=5
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fleet-mate-linux
+
+# Environment
+Environment="GOMAXPROCS=4"
+
+[Install]
+WantedBy=multi-user.target
